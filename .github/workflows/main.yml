@@ -10,26 +10,19 @@ jobs:
     runs-on:
       group: unreal-engine-public-plugins
 
-    services:
-      unreal-engine:
-        image: ghcr.io/epicgames/unreal-engine:dev-slim-5.4.2
-
-        credentials:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-
     steps:
       - name: Checkout repo
         uses: actions/Checkout@v4
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Extract repository name
         run: echo "PLUGIN_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
       - name: List directories
         run: |
-          ls
-          cd /home/ue4
-          ls
+          docker run --rm -ti -v "PROJECT_PATH:/project" ghcr.io/epicgames/unreal-engine:dev-slim-5.4.2
 
       - name: Build and Package Plugin
         run: |
