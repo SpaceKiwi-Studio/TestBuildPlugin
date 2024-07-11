@@ -22,10 +22,13 @@ jobs:
       - name: Checkout repo
         uses: actions/Checkout@v4
 
+      - name: Extract repository name
+        run: echo "PLUGIN_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+
       - name: Build and Package Plugin
         run: |
           cd /home/ue4/UnrealEngine
-          ./Engine/Build/BatchFiles/RunUAT.sh BuildPlugin -plugin=${{ github.workspace }}/${{ vars.PLUGIN_NAME }}.uplugin -package=${{ github.workspace }}/output
+          ./Engine/Build/BatchFiles/RunUAT.sh BuildPlugin -plugin=${{ github.workspace }}/${{ env.PLUGIN_NAME }}.uplugin -package=${{ github.workspace }}/output -targetplatforms=Linux -utf8output -rocket
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
