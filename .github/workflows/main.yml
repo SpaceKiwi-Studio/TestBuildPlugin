@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-package:
-    runs-on: unreal-engine-public-plugins
+    runs-on: unreal-engine_plugin-runners
 
     services:
       unreal-engine:
