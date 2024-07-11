@@ -22,7 +22,7 @@ jobs:
 
       - name: List directories
         run: |
-          docker run --rm -ti -v "PROJECT_PATH:/project" ghcr.io/epicgames/unreal-engine:dev-slim-5.4.2
+          docker run --rm -i -v "PROJECT_PATH:/project" ghcr.io/epicgames/unreal-engine:dev-slim-5.4.2
 
       - name: Build and Package Plugin
         run: |
