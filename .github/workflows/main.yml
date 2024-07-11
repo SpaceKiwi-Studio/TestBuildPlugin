@@ -25,11 +25,11 @@ jobs:
       - name: Extract repository name
         run: echo "PLUGIN_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
-        - name: List directories
-            run: |
-              ls
-              cd /home/ue4
-              ls
+      - name: List directories
+        run: |
+          ls
+          cd /home/ue4
+          ls
 
       - name: Build and Package Plugin
         run: |
