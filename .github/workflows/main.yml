@@ -1,0 +1,34 @@
+name: Build Unreal Engine plugin
+
+on:
+  push:
+      branches:
+        - main
+
+jobs:
+  build-and-package:
+    runs-on: unreal-engine-public-plugins
+
+    services:
+      unreal-engine:
+        image: ghcr.io/epicgames/unreal-engine:dev-slim-5.4.2
+
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+    steps:
+      - name: Checkout repo
+        uses: action/Checkout@v4
+
+      - name: Build and Package Plugin
+        run: |
+          cd /home/ue4/UnrealEngine
+          ./Engine/Build/BatchFiles/RunUAT.sh BuildPlugin -plugin=${{ github.workspace }}/${{ env.PLUGIN_NAME }}.uplugin -package=${{ github.workspace }}/output
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: packaged-plugin_${{ github.sha }}
+          path: ${{ github.workspace }}/output
+    
